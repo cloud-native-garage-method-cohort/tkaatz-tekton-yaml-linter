@@ -30,7 +30,7 @@ spec:
         - name: url
           value: $(params.repo-url)
         - name: revision
-          value: $(params.branch-name)  
+          value: $(params.branch-name)
     - name: lint-yaml
       workspaces:
         - name: shared-workspace
@@ -38,7 +38,7 @@ spec:
       params:
         - name: args
           value: ["."]
-      taskRef: 
+      taskRef:
         name: yaml-lint
       runAfter:
         - clone-repo
