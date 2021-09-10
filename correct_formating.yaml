@@ -7,38 +7,38 @@ spec:
   description: |
     Lint a Markdown file from a public Git repo
   params:
-  - name: repo-url
-    type: string
-    description: The git repository URL to clone from.
-  - name: branch-name
-    type: string
-    description: The git branch to clone.
+    - name: repo-url
+      type: string
+      description: The git repository URL to clone from.
+    - name: branch-name
+      type: string
+      description: The git branch to clone.
   workspaces:
-  - name: shared-data
-    description: |
-      This workspace will receive the cloned git repo and be passed
-      to the next Task for the repo's *.md files to be linted.
+    - name: shared-data
+      description: |
+        This workspace will receive the cloned git repo and be passed
+        to the next Task for the repo's *.md files to be linted.
   tasks:
-  - name: clone-repo
-    taskRef:
-      name: git-clone
-      kind: ClusterTask
-    workspaces:
-    - name: output
-      workspace: shared-data
-    params:
-    - name: url
-      value: $(params.repo-url)
-    - name: revision
-      value: $(params.branch-name)  
-  - name: lint-yaml
-    workspaces:
-    - name: shared-workspace
-      workspace: shared-data
-    params:
-    - name: args
-      value: ["."]
-    taskRef: 
-      name: yaml-lint
-    runAfter:
-    - clone-repo
+    - name: clone-repo
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      workspaces:
+        - name: output
+          workspace: shared-data
+      params:
+        - name: url
+          value: $(params.repo-url)
+        - name: revision
+          value: $(params.branch-name)  
+    - name: lint-yaml
+      workspaces:
+        - name: shared-workspace
+          workspace: shared-data
+      params:
+        - name: args
+          value: ["."]
+      taskRef: 
+        name: yaml-lint
+      runAfter:
+        - clone-repo
