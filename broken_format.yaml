@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: checking-out-branch-
+spec:
+  pipelineRef:
+    name: linting-pipeline
+      workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+              storage: 10Mi
+  params:
+  - name: repo-url
+    value: https://github.com/upslopeio/lint-markdown-files
+    - name: branch-name
+      value: main
